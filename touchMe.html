@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+
+            <div id="myFeedback"></div>
+            <canvas id="myTouchPad"></canvas>
+            
+
+    </div>
+</body>
+<style>
+.container{        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #myTouchPad{
+        height: 500px;
+        width:500px;
+        border:solid 1px red;
+        background-color: black;
+    }
+    #myFeedback{
+        height: 35px;
+        width:60px;
+        border:solid 1px black;
+    }
+</style>
+<script>
+    const touchZone = document.getElementById('myTouchPad');
+    const feedBackZone = document.getElementById('myFeedback');
+    const touchBounds = touchZone.getBoundingClientRect();
+    const touchCTX = touchZone.getContext("2d");
+    const touchRefresh = setInterval(
+        touchCTX.clearRect(0,0,500,500),200);
+    touchZone.height=500;
+    touchZone.width=500;
+
+    touchZone.addEventListener("touchmove",(e)=>drawXY(e));
+
+    function drawXY(e){
+
+        let touchX = e.touches[0].pageX;
+        let touchY = e.touches[0].pageY;
+
+        if(touchX>=touchBounds.left&&
+            touchX<=touchBounds.right&&
+            touchY>=touchBounds.top&&
+            touchY<=touchBounds.bottom){
+        touchCTX.strokeStyle= '#FFFFFF';
+        feedBackZone.innerHTML="X: " + (touchX-touchBounds.left) ;
+        touchCTX.beginPath();
+        touchCTX.moveTo(touchX-touchBounds.left,0);
+        touchCTX.lineTo(touchX-touchBounds.left,500);
+        touchCTX.stroke();
+        feedBackZone.innerHTML+="<br>Y: "+ (touchY-touchBounds.top); 
+        touchCTX.beginPath();
+        touchCTX.moveTo(0,touchY-touchBounds.top);
+        touchCTX.lineTo(500,touchY-touchBounds.top);
+        touchCTX.stroke();
+
+        }
+    }
+</script>
+</html>
