@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.5.43/Tone.js"></script>
 </head>
 <body>
     <div class="container">
@@ -39,11 +40,23 @@
     const feedBackZone = document.getElementById('myFeedback');
     const touchBounds = touchZone.getBoundingClientRect();
     const touchCTX = touchZone.getContext("2d");
+    const fmSynth = new Tone.FMSynth().toDestination();
+    const time = Tone.now();
     touchZone.height=500;
     touchZone.width=500;
+    touchZone.addEventListener("touchstart",(e)=>{
+    Tone.start();
 
-    touchZone.addEventListener("touchstart",(e)=>drawXY(e));
-    touchZone.addEventListener("touchmove",(e)=>drawXY(e));
+        drawXY(e);
+        console.log(Tone.context.currentTime);
+        fmSynth.modulation.frequency = e.touches[0].clientX-touchBounds.left;
+        fmSynth.triggerAttackRelease((e.touches[0].clientY-touchBounds.top)*10,'2n', Tone.context.currentTime);
+        });
+    touchZone.addEventListener("touchmove",(e)=>{
+        drawXY(e);
+        fmSynth.modulation.frequency = e.touches[0].clientX-touchBounds.left;
+        fmSynth.triggerAttackRelease((e.touches[0].clientY-touchBounds.top)*10,'2n', Tone.context.currentTime);
+        });
     touchZone.addEventListener("touchend",(e)=>{
         console.log(e);
         touchCTX.clearRect(0,0,500,500);
