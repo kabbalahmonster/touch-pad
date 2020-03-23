@@ -8,11 +8,8 @@
 </head>
 <body>
     <div class="container">
-
-            <div id="myFeedback"></div>
-            <canvas id="myTouchPad"></canvas>
-            
-
+        <div id="myFeedback"></div>
+        <canvas id="myTouchPad"></canvas> 
     </div>
 </body>
 <style>
@@ -25,13 +22,16 @@
     #myTouchPad{
         height: 500px;
         width:500px;
-        border:solid 1px red;
+        border:solid 3px red;
         background-color: black;
+        margin:20px;
     }
     #myFeedback{
         height: 35px;
         width:60px;
-        border:solid 1px black;
+        border:solid 3px black;
+        margin:10px;
+        padding:10px;
     }
 </style>
 <script>
@@ -39,12 +39,15 @@
     const feedBackZone = document.getElementById('myFeedback');
     const touchBounds = touchZone.getBoundingClientRect();
     const touchCTX = touchZone.getContext("2d");
-    const touchRefresh = setInterval(
-        touchCTX.clearRect(0,0,500,500),200);
     touchZone.height=500;
     touchZone.width=500;
 
+    touchZone.addEventListener("touchstart",(e)=>drawXY(e));
     touchZone.addEventListener("touchmove",(e)=>drawXY(e));
+    touchZone.addEventListener("touchend",(e)=>{
+        console.log(e);
+        touchCTX.clearRect(0,0,500,500);
+        });
 
     function drawXY(e){
 
@@ -57,6 +60,8 @@
             touchY<=touchBounds.bottom){
         touchCTX.strokeStyle= '#FFFFFF';
         feedBackZone.innerHTML="X: " + (touchX-touchBounds.left) ;
+
+        touchCTX.clearRect(0,0,500,500);
         touchCTX.beginPath();
         touchCTX.moveTo(touchX-touchBounds.left,0);
         touchCTX.lineTo(touchX-touchBounds.left,500);
