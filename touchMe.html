@@ -59,14 +59,14 @@
             touchY>=touchBounds.top&&
             touchY<=touchBounds.bottom){
         touchCTX.strokeStyle= '#FFFFFF';
-        feedBackZone.innerHTML="X: " + (touchX-touchBounds.left) ;
+        feedBackZone.innerHTML="X: " + (touchX-touchBounds.left).toFixed();
 
         touchCTX.clearRect(0,0,500,500);
         touchCTX.beginPath();
         touchCTX.moveTo(touchX-touchBounds.left,0);
         touchCTX.lineTo(touchX-touchBounds.left,500);
         touchCTX.stroke();
-        feedBackZone.innerHTML+="<br>Y: "+ (touchY-touchBounds.top); 
+        feedBackZone.innerHTML+="<br>Y: "+ (touchY-touchBounds.top).toFixed(); 
         touchCTX.beginPath();
         touchCTX.moveTo(0,touchY-touchBounds.top);
         touchCTX.lineTo(500,touchY-touchBounds.top);
